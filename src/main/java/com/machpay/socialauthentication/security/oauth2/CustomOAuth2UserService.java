@@ -7,7 +7,7 @@ import com.machpay.socialauthentication.repository.UserRepository;
 import com.machpay.socialauthentication.security.UserPrincipal;
 import com.machpay.socialauthentication.security.oauth2.user.OAuth2UserInfo;
 import com.machpay.socialauthentication.security.oauth2.user.OAuth2UserInfoFactory;
-import com.machpay.socialauthentication.model.AuthProvider;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
