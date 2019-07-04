@@ -1,7 +1,7 @@
 package com.machpay.socialauthentication.security.oauth2;
 
 import com.machpay.socialauthentication.config.AppProperties;
-import com.machpay.socialauthentication.exception.BadRequestException;
+import com.machpay.socialauthentication.common.exception.BadRequestException;
 import com.machpay.socialauthentication.security.TokenProvider;
 import com.machpay.socialauthentication.util.CookieUtils;
 import org.springframework.beans.factory.annotation.Autowired;

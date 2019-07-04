@@ -1,8 +1,8 @@
 package com.machpay.socialauthentication.security;
 
-import com.machpay.socialauthentication.exception.ResourceNotFoundException;
-import com.machpay.socialauthentication.model.User;
-import com.machpay.socialauthentication.repository.UserRepository;
+import com.machpay.socialauthentication.common.exception.ResourceNotFoundException;
+import com.machpay.socialauthentication.user.User;
+import com.machpay.socialauthentication.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -1,7 +1,7 @@
-package com.machpay.socialauthentication.model;
+package com.machpay.socialauthentication.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
+import com.machpay.socialauthentication.auth.AuthProvider;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,16 +34,31 @@ public class User {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String firstName;
+
+    @Column
+    private String middleName;
+
+    @Column(nullable = false)
+    private String lastName;
 
     @Email
     @Column(nullable = false)
     private String email;
 
+    @Column
+    private String phoneNumber;
+
     private String imageUrl;
 
     @Column(nullable = false)
-    private Boolean emailVerified = false;
+    private Boolean isEmailVerified = false;
+
+    @Column(nullable = false)
+    private Boolean isPhoneNumberVerified = false;
+
+    @Column
+    private String refreshToken;
 
     @JsonIgnore
     private String password;
@@ -53,6 +68,4 @@ public class User {
     private AuthProvider provider;
 
     private String providerId;
-
-
 }

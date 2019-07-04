@@ -1,4 +1,4 @@
-package com.machpay.socialauthentication.payload;
+package com.machpay.socialauthentication.common;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

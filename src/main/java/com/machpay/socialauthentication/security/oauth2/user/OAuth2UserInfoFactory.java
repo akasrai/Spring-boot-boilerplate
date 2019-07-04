@@ -1,7 +1,7 @@
 package com.machpay.socialauthentication.security.oauth2.user;
 
-import com.machpay.socialauthentication.exception.OAuth2AuthenticationProcessingException;
-import com.machpay.socialauthentication.model.AuthProvider;
+import com.machpay.socialauthentication.common.exception.OAuth2AuthenticationProcessingException;
+import com.machpay.socialauthentication.auth.AuthProvider;
 
 import java.util.Map;
 

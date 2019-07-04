@@ -1,6 +1,5 @@
-package com.machpay.socialauthentication.repository;
+package com.machpay.socialauthentication.user;
 
-import com.machpay.socialauthentication.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

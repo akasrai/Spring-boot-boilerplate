@@ -1,6 +1,6 @@
-package com.machpay.socialauthentication.payload;
+package com.machpay.socialauthentication.auth;
 
-import lombok.AllArgsConstructor;
+import com.machpay.socialauthentication.user.UserResponse;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,8 +13,10 @@ import lombok.ToString;
 public class AuthResponse {
     private String accessToken;
     private String tokenType = "Bearer";
+    private UserResponse user;
 
-    public AuthResponse(String accessToken) {
+    public AuthResponse(String accessToken,UserResponse user) {
         this.accessToken = accessToken;
+        this.user = user;
     }
 }

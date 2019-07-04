@@ -1,4 +1,4 @@
-package com.machpay.socialauthentication.exception;
+package com.machpay.socialauthentication.common.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

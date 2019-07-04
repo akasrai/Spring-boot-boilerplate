@@ -1,9 +1,9 @@
 package com.machpay.socialauthentication.security.oauth2;
 
-import com.machpay.socialauthentication.exception.OAuth2AuthenticationProcessingException;
-import com.machpay.socialauthentication.model.AuthProvider;
-import com.machpay.socialauthentication.model.User;
-import com.machpay.socialauthentication.repository.UserRepository;
+import com.machpay.socialauthentication.common.exception.OAuth2AuthenticationProcessingException;
+import com.machpay.socialauthentication.auth.AuthProvider;
+import com.machpay.socialauthentication.user.User;
+import com.machpay.socialauthentication.user.UserRepository;
 import com.machpay.socialauthentication.security.UserPrincipal;
 import com.machpay.socialauthentication.security.oauth2.user.OAuth2UserInfo;
 import com.machpay.socialauthentication.security.oauth2.user.OAuth2UserInfoFactory;
@@ -68,14 +68,18 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         user.setProvider(AuthProvider.valueOf(oAuth2UserRequest.getClientRegistration().getRegistrationId()));
         user.setProviderId(oAuth2UserInfo.getId());
-        user.setName(oAuth2UserInfo.getName());
+        user.setFirstName(oAuth2UserInfo.getFirstName());
+        user.setMiddleName(oAuth2UserInfo.getMiddleName());
+        user.setLastName(oAuth2UserInfo.getLastName());
         user.setEmail(oAuth2UserInfo.getEmail());
         user.setImageUrl(oAuth2UserInfo.getImageUrl());
         return userRepository.save(user);
     }
 
     private User updateExistingUser(User existingUser, OAuth2UserInfo oAuth2UserInfo) {
-        existingUser.setName(oAuth2UserInfo.getName());
+        existingUser.setFirstName(oAuth2UserInfo.getFirstName());
+        existingUser.setMiddleName(oAuth2UserInfo.getMiddleName());
+        existingUser.setLastName(oAuth2UserInfo.getLastName());
         existingUser.setImageUrl(oAuth2UserInfo.getImageUrl());
         return userRepository.save(existingUser);
     }

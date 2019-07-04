@@ -1,4 +1,4 @@
-package com.machpay.socialauthentication.payload;
+package com.machpay.socialauthentication.auth;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -12,10 +12,7 @@ import javax.validation.constraints.NotBlank;
 @Setter
 @EqualsAndHashCode
 @ToString
-public class SignUpRequest {
-    @NotBlank
-    private String name;
-
+public class LoginRequest {
     @NotBlank
     @Email
     private String email;

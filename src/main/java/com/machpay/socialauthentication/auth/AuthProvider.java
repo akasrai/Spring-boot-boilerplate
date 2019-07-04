@@ -1,4 +1,4 @@
-package com.machpay.socialauthentication.model;
+package com.machpay.socialauthentication.auth;
 
 public enum  AuthProvider {
     local,
