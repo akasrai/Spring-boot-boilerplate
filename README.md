@@ -32,4 +32,3 @@ git clone git@github.com:Akasky70/Spring-boot-boilerplate.git
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-red.svg)](https://opensource.org/licenses/MIT)
 
-Made with :heart: and Spring Boot
