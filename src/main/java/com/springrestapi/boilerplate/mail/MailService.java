@@ -1,60 +1,77 @@
 package com.springrestapi.boilerplate.mail;
 
+import freemarker.template.Configuration;
+import freemarker.template.Template;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
-import javax.mail.MessagingException;
+
+import javax.mail.Message;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Service
 public class MailService {
+    private final Configuration templates;
+
+    private final MailProperties mailProperties;
 
     @Autowired
-    private JavaMailSender javaMailSender;
-
-    public void sendEmail() {
-
-        SimpleMailMessage msg = new SimpleMailMessage();
-        msg.setTo("akasky70@gmail.com", "lovecoding@gmail.com");
-
-        msg.setSubject("Testing from Spring Boot");
-        msg.setText("Hello World \n Spring Boot Email");
-
-        javaMailSender.send(msg);
-
+    MailService(MailProperties mailProperties, Configuration templates){
+        this.mailProperties = mailProperties;
+        this.templates = templates;
     }
 
-    public void sendEmailWithAttachment() throws MessagingException, IOException {
 
-        MimeMessage msg = javaMailSender.createMimeMessage();
-
-        // true = multipart message
-        MimeMessageHelper helper = new MimeMessageHelper(msg, true);
-        helper.setTo("1@gmail.com");
-
-        helper.setSubject("Testing from Spring Boot");
-
-        // default = text/plain
-        //helper.setText("Check attachment for image!");
-
-        // true = text/html
-        helper.setText("<h1>Check attachment for image!</h1>", true);
-
-        //FileSystemResource file = new FileSystemResource(new File("classpath:android.png"));
-
-        //Resource resource = new ClassPathResource("android.png");
-        //InputStream input = resource.getInputStream();
-
-        //ResourceUtils.getFile("classpath:android.png");
-
-        helper.addAttachment("my_photo.png", new ClassPathResource("android.png"));
-
-        javaMailSender.send(msg);
-
+    public boolean sendVerificationMail(String toEmail, String verificationCode) {
+        String subject = "Please verify your email";
+        String body = "";
+        try {
+            Template t = templates.getTemplate("email-verification.ftl");
+            Map<String, String> map = new HashMap<>();
+            map.put("VERIFICATION_URL", mailProperties.getVerificationApi() + verificationCode);
+            body = FreeMarkerTemplateUtils.processTemplateIntoString(t, map);
+        } catch (Exception ex) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return sendMail(toEmail, subject, body);
     }
+
+    public boolean sendMail(String toEmail, String subject, String body) {
+
+        try {
+            Properties props = System.getProperties();
+            props.put("mail.transport.protocol", "smtp");
+            props.put("mail.smtp.port", mailProperties.getPort());
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.auth", "true");
+
+            Session session = Session.getDefaultInstance(props);
+            session.setDebug(true);
+
+            MimeMessage msg = new MimeMessage(session);
+            msg.setFrom(new InternetAddress(mailProperties.getFrom(), mailProperties.getFromName()));
+            msg.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
+            msg.setSubject(subject);
+            msg.setContent(body, "text/html");
+
+            Transport transport = session.getTransport();
+            transport.connect(mailProperties.getHost(), mailProperties.getUsername(), mailProperties.getPassword());
+            transport.sendMessage(msg, msg.getAllRecipients());
+            return true;
+        } catch (Exception ex) {
+            Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        return false;
+    }
+
+
 }

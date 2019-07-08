@@ -35,13 +35,10 @@ public class AuthController {
     private UserService userService;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
     private TokenProvider tokenProvider;
 
     @Autowired
-    private MailService mailService;
+    private AuthService authService;
 
     @PostMapping("/login")
     public ResponseEntity authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -52,14 +49,6 @@ public class AuthController {
                         loginRequest.getPassword()
                 )
         );
-
-        try {
-
-            mailService.sendEmail();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -79,21 +68,11 @@ public class AuthController {
         }
 
         // Creating user's account
-        User user = new User();
-        user.setFirstName(signUpRequest.getFirstName());
-        user.setMiddleName(signUpRequest.getMiddleName());
-        user.setLastName(signUpRequest.getLastName());
-        user.setEmail(signUpRequest.getEmail());
-        user.setPassword(signUpRequest.getPassword());
-        user.setProvider(AuthProvider.local);
-
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        User result = userService.save(user);
+        User user = authService.create(signUpRequest);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/user/me")
-                .buildAndExpand(result.getId()).toUri();
+                .buildAndExpand(user.getId()).toUri();
 
         return ResponseEntity.created(location)
                 .body(new ApiResponse(true, "User registered successfully@"));
