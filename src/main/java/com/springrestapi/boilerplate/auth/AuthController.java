@@ -1,13 +1,13 @@
 package com.springrestapi.boilerplate.auth;
 
 import com.springrestapi.boilerplate.common.exception.BadRequestException;
-import com.springrestapi.boilerplate.mail.MailService;
+import com.springrestapi.boilerplate.emailVerification.VerificationTokenService;
 import com.springrestapi.boilerplate.user.User;
 import com.springrestapi.boilerplate.common.ApiResponse;
 import com.springrestapi.boilerplate.user.UserMapper;
 import com.springrestapi.boilerplate.security.TokenProvider;
-import com.springrestapi.boilerplate.user.UserResponse;
 import com.springrestapi.boilerplate.user.UserService;
+import com.springrestapi.boilerplate.user.dto.UserResponse;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,13 +15,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.mail.MessagingException;
 import javax.validation.Valid;
-import java.io.IOException;
 import java.net.URI;
 
 @RestController
@@ -32,13 +29,16 @@ public class AuthController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
     private TokenProvider tokenProvider;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private AuthService authService;
+
+    @Autowired
+    private VerificationTokenService verificationTokenService;
 
     @PostMapping("/login")
     public ResponseEntity authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -51,14 +51,11 @@ public class AuthController {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-
         String token = tokenProvider.createToken(authentication);
         User user = userService.findByEmail(loginRequest.getEmail());
+        AuthResponse authResponse = authService.buildAuthResponse(user, token);
 
-        UserMapper mapper = Mappers.getMapper(UserMapper.class);
-        UserResponse userResponse = mapper.toUserResponse(user);
-
-        return ResponseEntity.ok(new AuthResponse(token, userResponse));
+        return ResponseEntity.ok(authResponse);
     }
 
     @PostMapping("/signup")
@@ -67,15 +64,27 @@ public class AuthController {
             throw new BadRequestException("Email address already in use.");
         }
 
-        // Creating user's account
-        User user = authService.create(signUpRequest);
+        User user = authService.createUser(signUpRequest);
 
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentContextPath().path("/user/me")
-                .buildAndExpand(user.getId()).toUri();
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        signUpRequest.getEmail(),
+                        signUpRequest.getPassword()
+                )
+        );
 
-        return ResponseEntity.created(location)
-                .body(new ApiResponse(true, "User registered successfully@"));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = tokenProvider.createToken(authentication);
+        AuthResponse authResponse = authService.buildAuthResponse(user, token);
+
+        return ResponseEntity.ok(authResponse);
+    }
+
+    @GetMapping("/verify-email")
+    public ResponseEntity<String> verifyEmail(@RequestParam String token) {
+        ResponseEntity<String> responseEntity = verificationTokenService.verifyEmail(token);
+
+        return responseEntity;
     }
 
 }

@@ -23,6 +23,7 @@ public class VerificationToken {
 
     private String token;
 
+    @Enumerated(EnumType.STRING)
     private Status status;
 
     private LocalDateTime expiredDateTime;

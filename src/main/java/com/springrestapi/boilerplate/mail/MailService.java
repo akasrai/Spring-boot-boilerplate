@@ -34,6 +34,7 @@ public class MailService {
     public boolean sendVerificationMail(String toEmail, String verificationCode) {
         String subject = "Please verify your email";
         String body = "";
+
         try {
             Template t = templates.getTemplate("email-verification.ftl");
             Map<String, String> map = new HashMap<>();
@@ -42,6 +43,7 @@ public class MailService {
         } catch (Exception ex) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
+
         return sendMail(toEmail, subject, body);
     }
 
@@ -66,10 +68,12 @@ public class MailService {
             Transport transport = session.getTransport();
             transport.connect(mailProperties.getHost(), mailProperties.getUsername(), mailProperties.getPassword());
             transport.sendMessage(msg, msg.getAllRecipients());
+
             return true;
         } catch (Exception ex) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
+
         return false;
     }
 

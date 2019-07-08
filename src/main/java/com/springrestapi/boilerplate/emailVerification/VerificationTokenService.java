@@ -26,6 +26,7 @@ public class VerificationTokenService {
         this.mailService = mailService;
     }
 
+
     public void createVerification(String email){
         User user = userService.findByEmail(email);
 
