@@ -1,6 +1,7 @@
 package com.springrestapi.boilerplate.auth;
 
 import com.springrestapi.boilerplate.common.exception.BadRequestException;
+import com.springrestapi.boilerplate.mail.MailService;
 import com.springrestapi.boilerplate.user.User;
 import com.springrestapi.boilerplate.common.ApiResponse;
 import com.springrestapi.boilerplate.user.UserMapper;
@@ -18,7 +19,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 
 @RestController
@@ -37,6 +40,9 @@ public class AuthController {
     @Autowired
     private TokenProvider tokenProvider;
 
+    @Autowired
+    private MailService mailService;
+
     @PostMapping("/login")
     public ResponseEntity authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -46,6 +52,14 @@ public class AuthController {
                         loginRequest.getPassword()
                 )
         );
+
+        try {
+
+            mailService.sendEmail();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
