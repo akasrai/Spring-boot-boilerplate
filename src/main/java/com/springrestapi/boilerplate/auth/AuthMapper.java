@@ -1,14 +1,14 @@
-package com.springrestapi.boilerplate.user;
+package com.springrestapi.boilerplate.auth;
 
+import com.springrestapi.boilerplate.user.User;
 import com.springrestapi.boilerplate.user.dto.AddressResponse;
 import com.springrestapi.boilerplate.user.dto.BasicInfoResponse;
 import com.springrestapi.boilerplate.user.dto.StatusResponse;
-import com.springrestapi.boilerplate.user.dto.UserResponse;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface UserMapper {
-    UserResponse toUserResponse(User user);
+public interface AuthMapper {
+    AuthResponse toAuthResponse(User user);
 
     BasicInfoResponse toBasicInfoResponse(User user);
 
