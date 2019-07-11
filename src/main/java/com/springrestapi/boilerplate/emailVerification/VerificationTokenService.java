@@ -40,7 +40,7 @@ public class VerificationTokenService {
             verificationToken = verificationTokens.get(0);
         }
 
-        mailService.sendVerificationMail(email, verificationToken.getToken());
+        mailService.sendVerificationMail(user, verificationToken.getToken());
     }
 
     public ResponseEntity<String> verifyEmail(String token){

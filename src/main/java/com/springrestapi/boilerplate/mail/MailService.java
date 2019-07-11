@@ -1,5 +1,6 @@
 package com.springrestapi.boilerplate.mail;
 
+import com.springrestapi.boilerplate.user.User;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class MailService {
     }
 
 
-    public boolean sendVerificationMail(String toEmail, String verificationCode) {
+    public boolean sendVerificationMail(User user, String verificationCode) {
         String subject = "Please verify your email";
         String body = "";
 
@@ -39,12 +40,13 @@ public class MailService {
             Template t = templates.getTemplate("email-verification.ftl");
             Map<String, String> map = new HashMap<>();
             map.put("VERIFICATION_URL", mailProperties.getVerificationApi() + verificationCode);
+            map.put("USER_NAME", user.getFullName());
             body = FreeMarkerTemplateUtils.processTemplateIntoString(t, map);
         } catch (Exception ex) {
             Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
         }
 
-        return sendMail(toEmail, subject, body);
+        return sendMail(user.getEmail(), subject, body);
     }
 
     public boolean sendMail(String toEmail, String subject, String body) {

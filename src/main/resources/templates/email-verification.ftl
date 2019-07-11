@@ -1,9 +1,9 @@
-Hi Bro,<br/>
+Hi ${USER_NAME},<br/>
 
-Thanks for using Hello Koding! Please confirm your email address by clicking on the link below.<br/>
+Thanks for using this boilerplate! Please confirm your email address by clicking on the link below.<br/>
 
 ${VERIFICATION_URL}<br/>
 
-If you did not sign up for a Hello Koding account please disregard this email.<br/>
+If you did not sign up for a account please disregard this email.<br/>
 
-The Social Authentication Team,
+akasky,
