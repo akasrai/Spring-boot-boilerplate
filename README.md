@@ -22,6 +22,7 @@ git clone git@github.com:Akasky70/Spring-boot-boilerplate.git
 - Login with Facebook
 - Login with Google
 - Login with Github
+- Email verification
 
 ## Author
 
