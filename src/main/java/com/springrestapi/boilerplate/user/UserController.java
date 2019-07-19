@@ -3,7 +3,6 @@ package com.springrestapi.boilerplate.user;
 import com.springrestapi.boilerplate.security.CurrentUser;
 import com.springrestapi.boilerplate.security.UserPrincipal;
 import com.springrestapi.boilerplate.user.dto.UserResponse;
-import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
