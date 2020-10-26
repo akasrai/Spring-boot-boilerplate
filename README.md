@@ -4,7 +4,9 @@ A quick startup boilerplate with Spring Boot framework, JWT, OAuth2 and RESTapi.
 ## Installation
 You can `fork` the project.
 
-[![fork this repo](http://githubbadges.com/fork.svg?user=akasky70&repo=Spring-boot-boilerplate&style=flat&color=fff&background=da644e)](https://github.com/Akasky70/Spring-boot-boilerplate/fork)
+  <a href="(https://github.com/Akasky70/Spring-boot-boilerplate/fork" alt="fork this repo">
+    <img src="https://img.shields.io/github/forks/akasrai/Spring-boot-boilerplate?style=social" />
+  </a>
 
 You can clone the whole project.
 
